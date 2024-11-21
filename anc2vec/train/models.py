@@ -6,10 +6,10 @@ from .layers import Distance2logprob
 
 class Embedder(tf.keras.Model):
     def _build(vocab_sz, embedding_sz):
-        inputs = tf.keras.Input(shape=(vocab_sz), dtype=tf.float32)
+        inputs = tf.keras.Input(shape=(768,), dtype=tf.float32)
 
         hidden = tf.keras.layers.Dense(
-            embedding_sz,
+            units=embedding_sz,
             kernel_initializer=tf.keras.initializers.GlorotUniform(seed=1234),
             use_bias=False,
             name='embedding')(inputs)
@@ -33,8 +33,7 @@ class Embedder(tf.keras.Model):
         return tf.keras.Model(inputs, [y, z, w])
 
     def build(vocab_sz, embedding_sz):
-        m = Embedder._build(vocab_sz, embedding_sz)
-        model = Embedder(m.input, m.output, name='Embedder')
+        model = Embedder._build(vocab_sz, embedding_sz)
 
         optimizer = tf.keras.optimizers.Adam()
 

@@ -6,10 +6,23 @@ authors = ["Alejandro A. Edera <aedera@sinc.unl.edu.ar>"]
 
 [tool.poetry.dependencies]
 python = "^3.6"
-tensorflow = ">=2.3.1, <2.5"
 
 [tool.poetry.dev-dependencies]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pixi.project]
+channels = ["conda-forge"]
+platforms = ["osx-arm64"]
+
+[tool.pixi.pypi-dependencies]
+anc2vec = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+tensorflow = ">=2.17.0,<3"
+ipython = ">=8.29.0,<9"
+jupyter = ">=1.1.1,<2"

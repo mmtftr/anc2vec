@@ -28,9 +28,8 @@ class NeighborRecoveryLoss(tf.keras.losses.Loss):
 
 class Word2vecLoss(tf.keras.losses.Loss):
     def __init__(self, from_logits=False,
-                 reduction=tf.keras.losses.Reduction.AUTO,
                  name='recovery_error'):
-        super().__init__(reduction=reduction, name=name)
+        super().__init__(name=name)
 
     def call(self, y_true, y_pred, sample_weight=None):
         # get log probabilities only for neighbors
