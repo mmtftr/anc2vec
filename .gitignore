@@ -1,4 +1,9 @@
 
+wandb/
+
 # pixi environments
 .pixi
 *.egg-info
+
+*.obo
+*.npy

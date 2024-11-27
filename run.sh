@@ -1,0 +1,14 @@
+python -m anc2vec.train.cli \
+    --obo-file ./go-basic.obo \
+    --embeddings-path ./go-basic.sbert.ontology.embeddings.npy \
+    --output-path ./go-basic.sbert-anc2vec-2.ontology.embeddings.npy \
+    --embedding-size 200 \
+    --batch-size 32 \
+    --epochs 100 \
+    --ance-weight 1.0 \
+    --name-weight 0.5 \
+    --auto-weight 0.3 \
+    --initial-lr 0.001 \
+    --use-lr-schedule \
+    --wandb-project "anc2vec" \
+    --wandb-entity "mmtf"

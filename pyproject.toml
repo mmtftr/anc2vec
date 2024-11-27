@@ -13,16 +13,22 @@ python = "^3.6"
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+
 [tool.pixi.project]
 channels = ["conda-forge"]
 platforms = ["osx-arm64"]
 
 [tool.pixi.pypi-dependencies]
 anc2vec = { path = ".", editable = true }
+tensorflow = "==2.14.0"
+tensorflow-metal = ">=1.1.0,<2"
 
 [tool.pixi.tasks]
+run = "bash run.sh"
 
 [tool.pixi.dependencies]
-tensorflow = ">=2.17.0,<3"
 ipython = ">=8.29.0,<9"
 jupyter = ">=1.1.1,<2"
+wandb = "==0.18.3"
+python = "==3.11"
+numpy = "<2"

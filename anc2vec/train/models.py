@@ -32,23 +32,45 @@ class Embedder(tf.keras.Model):
 
         return tf.keras.Model(inputs, [y, z, w])
 
-    def build(vocab_sz, embedding_sz):
+    def build(vocab_sz, embedding_sz, loss_weights=None, use_lr_schedule=False, initial_lr=0.001):
         model = Embedder._build(vocab_sz, embedding_sz)
 
-        optimizer = tf.keras.optimizers.Adam()
+        # Default loss weights if none provided
+        if loss_weights is None:
+            loss_weights = {
+                'ance': 1.0,
+                'name': 1.0,
+                'auto': 1.0
+            }
 
-        model.compile(optimizer=optimizer,
-                      loss=[
-                          losses.Word2vecLoss(),
-                          tf.keras.losses.CategoricalCrossentropy(),
-                          losses.Word2vecLoss(),
-                      ],
-                      metrics={
-                          'ance': tf.keras.metrics.Recall(name='rc'),
-                          'name': tf.keras.metrics.CategoricalAccuracy(name='ac'),
-                          'auto': tf.keras.metrics.MeanSquaredError(name='ms'),
-                      },
-                      #run_eagerly=True,
+        # Configure learning rate schedule if enabled
+        if use_lr_schedule:
+            lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
+                initial_lr,
+                decay_steps=1000,
+                decay_rate=0.9
+            )
+            optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
+        else:
+            optimizer = tf.keras.optimizers.Adam(learning_rate=initial_lr)
+
+        model.compile(
+            optimizer=optimizer,
+            loss=[
+                losses.Word2vecLoss(),
+                tf.keras.losses.CategoricalCrossentropy(),
+                losses.Word2vecLoss(),
+            ],
+            loss_weights=[
+                loss_weights['ance'],
+                loss_weights['name'],
+                loss_weights['auto']
+            ],
+            metrics={
+                'ance': tf.keras.metrics.Recall(name='rc'),
+                'name': tf.keras.metrics.CategoricalAccuracy(name='ac'),
+                'auto': tf.keras.metrics.MeanSquaredError(name='ms'),
+            }
         )
 
         return model
